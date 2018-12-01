@@ -1,0 +1,9 @@
+body{
+	background-color: #dddddd; padding-top: 50px; padding-bottom: 50px;
+}
+form{
+	background-color: #ffffff; padding-top: 20px; padding-bottom: 20px;
+}
+.box_action{
+	display: none;
+}
