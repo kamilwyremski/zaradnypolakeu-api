@@ -15,15 +15,24 @@ error_reporting(E_ALL);
   
 require_once('../zaradny-api.class.php');
 
-$alert_danger = false;
+$alert_danger = '';
+$alert_success = '';
 
 try{
 	$zaradnyApi = new zaradnyApi();
 	if(!empty($_POST['action'])){
 		$zaradnyApi->checkAction($_POST);
 		$zaradny_request_url = $zaradnyApi->createRequestUrl($_POST);
-		$result = file_get_contents($zaradny_request_url);
-	//	print_r(json_decode($result, true));
+		$result = $zaradnyApi->getResult($zaradny_request_url);
+		// w zmiennej $result znajduje się tablica z odpowiedzią z serwera  
+		//print_r($result);
+		$info = $zaradnyApi->generateInfo($_POST,$result);
+		if(!empty($info['error'])){
+			$alert_danger = $info['error'];
+		}
+		if(!empty($info['success'])){
+			$alert_success = $info['success'];
+		}
 	}
 }catch(Exception $e){
 	$alert_danger = $e->getMessage();
@@ -51,6 +60,9 @@ try{
 		if($alert_danger){
 			echo('<div class="alert alert-danger" role="alert">'.$alert_danger.'</div>');
 		}
+		if($alert_success){
+			echo('<div class="alert alert-success" role="alert">'.$alert_success.'</div>');
+		}
 	?>
 	<div class="form-group">
 		<label for="select_action">Wybierz akcje</label>
@@ -74,6 +86,80 @@ try{
 	<div class="form-group box_action" id="box_page">
 		<label for="page">Strona paginacji</label>
 		<input type="number" class="form-control" id="page" disabled name="page" min="1" value="1">
+	</div>
+	<div class="box_action" id="box_add">
+		<div class="form-group">
+			<label for="name">Tytuł ogłoszenia</label>
+			<input type="text" class="form-control" id="name" required disabled name="name" maxlength="128">
+		</div>
+		<div class="form-group">
+			<label for="type_id">ID typu ogłoszenia</label>
+			<input type="number" class="form-control" id="type_id" required disabled name="type_id" min="1">
+		</div>
+		<div class="form-group">
+			<label for="category_id">ID kategorii</label>
+			<input type="number" class="form-control" id="category_id" required disabled name="category_id" min="1">
+		</div>
+		<div class="form-group">
+			<label for="description">Opis ogłoszenia</label>
+			<textarea class="form-control" id="description" required disabled name="description"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="country_id">ID kraju</label>
+			<input type="number" class="form-control" id="country_id" required disabled name="country_id" min="1">
+		</div>
+		<div class="form-group">
+			<label for="state_id">ID regionu</label>
+			<input type="number" class="form-control" id="state_id" required disabled name="state_id" min="1">
+		</div>
+		<div class="form-group">
+			<label for="state2_id">ID podregionu</label>
+			<input type="number" class="form-control" id="state2_id" required disabled name="state2_id" min="1">
+		</div>
+		<div class="form-group">
+			<label for="phone">Telefon</label>
+			<input type="text" class="form-control" id="phone" disabled name="phone" maxlength="32">
+		</div>
+		<div class="form-group">
+			<label for="address">Adres</label>
+			<input type="text" class="form-control" id="address" disabled name="address" maxlength="512">
+		</div>
+		<div class="form-group">
+			<label for="address_lat">Adres - szerokość geograficzna</label>
+			<input type="number" class="form-control" id="address_lat" disabled name="address_lat" step="0.000001">
+		</div>
+		<div class="form-group">
+			<label for="address_long">Adres - długość geograficzna</label>
+			<input type="number" class="form-control" id="address_long" disabled name="address_long" step="0.000001">
+		</div>
+		<div class="form-group">
+			<label for="price">Cena</label>
+			<input type="number" class="form-control" id="price" disabled name="price" min="0" step="0.01">
+		</div>
+		<div class="form-group">
+			<label for="currency">Waluta</label>
+			<input type="text" class="form-control" id="currency" disabled name="currency">
+		</div>
+		<div class="form-group">
+			<label><input type="checkbox" name="price_negotiate"> Cena do negocjacji</label>
+		</div>
+		<div class="form-group">
+			<label><input type="checkbox" name="price_free"> Za darmo</label>
+		</div>
+	</div>
+	<div class="form-group box_action" id="box_category_id">
+		<label for="category_id">ID nadkategorii</label>
+		<input type="number" class="form-control" id="category_id" disabled name="category_id" min="0">
+	</div>
+	<div class="box_action" id="box_state">
+		<div class="form-group">
+			<label for="country_id">ID kraju</label>
+			<input type="number" class="form-control" id="country_id" required disabled name="country_id" min="0">
+		</div>
+		<div class="form-group">
+			<label for="state_id">ID regionu</label>
+			<input type="number" class="form-control" id="state_id" disabled name="state_id" min="0">
+		</div>
 	</div>
 	<button type="submit" class="btn btn-primary">Wyślij</button>
 </form>
