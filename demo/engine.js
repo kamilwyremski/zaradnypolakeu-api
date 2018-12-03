@@ -6,6 +6,8 @@ $(document).ready(function(){
 			$('#box_offer_id').show().find('input,textarea').prop('disabled',false);
 		}else if(val=='list_offers'){
 			$('#box_page').show().find('input,textarea').prop('disabled',false);
+		}else if(val=='list_my_offers'){
+			$('#box_page').show().find('input,textarea').prop('disabled',false);
 		}else if(val=='add_offer'){
 			$('#box_add').show().find('input,textarea').prop('disabled',false);
 		}else if(val=='edit_offer'){

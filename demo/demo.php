@@ -25,7 +25,7 @@ try{
 		$zaradny_request_url = $zaradnyApi->createRequestUrl($_POST);
 		$result = $zaradnyApi->getResult($zaradny_request_url);
 		// w zmiennej $result znajduje się tablica z odpowiedzią z serwera  
-		//print_r($result);
+		// print_r($result);
 		$info = $zaradnyApi->generateInfo($_POST,$result);
 		if(!empty($info['error'])){
 			$alert_danger = $info['error'];
@@ -56,6 +56,7 @@ try{
 </head>
 <body>
 <form class="container" action="" method="post">
+	<h3 class="text-center">Integracja z API systemu <a href="https://zaradnypolak.eu" target="_blank">zaradnypolak.eu</a></h3>
 	<?php 
 		if($alert_danger){
 			echo('<div class="alert alert-danger" role="alert">'.$alert_danger.'</div>');
@@ -70,6 +71,7 @@ try{
 			<option value="">-- wybierz --</option>
 			<option value="show_offer">Pokaż ogłoszenie</option>
 			<option value="list_offers">Listuj ogłoszenia</option>
+			<option value="list_my_offers">Listuj moje ogłoszenia</option>
 			<option value="add_offer">Dodaj ogłoszenie</option>
 			<option value="edit_offer">Edytuj ogłoszenie</option>
 			<option value="remove_offer">Usuń ogłoszenie</option>
@@ -163,5 +165,10 @@ try{
 	</div>
 	<button type="submit" class="btn btn-primary">Wyślij</button>
 </form>
+<footer>
+	<div class="container">
+		<span class="text-muted">Project 2018 by <a href="http://wyremski.pl" target="_blank" title="Creating websites">Kamil Wyremski</a></span>
+	</div>
+</footer>
 </body>
 </html>

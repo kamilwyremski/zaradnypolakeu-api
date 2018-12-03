@@ -1,6 +1,6 @@
 <?php
 /************************************************************************
- * Klasa dla API dla strony https://zaradnypolak.eu ver 0.0.2
+ * Klasa dla API dla strony https://zaradnypolak.eu ver 1.0.0
  * Copyright (c) 2018 Kamil Wyremski
  * https://wyremski.pl
  *
@@ -26,6 +26,7 @@ class zaradnyApi{
 	public function checkAction(array $request){
 		if(!(($request['action']=='show_offer' and !empty($request['offer_id'])) or 
 			($request['action']=='list_offers') or
+			($request['action']=='list_my_offers') or
 			(($request['action']=='add_offer' or $request['action']=='edit_offer') and !empty($request['name']) and !empty($request['category_id']) and !empty($request['type_id'])) or 
 			($request['action']=='remove_offer' and !empty($request['offer_id'])) or 
 			($request['action']=='list_types') or 
@@ -59,6 +60,8 @@ class zaradnyApi{
 			if($request['action']=='show_offer' and !empty($response['name'])){
 				$info['success'] = 'Poprawnie pobrano ogłoszenie '.$response['name'];
 			}elseif($request['action']=='list_offers' and !empty($response['offers'])){
+				$info['success'] = 'Poprawnie pobrano '.count($response['offers']).' ogłoszeń';
+			}elseif($request['action']=='list_my_offers' and !empty($response['offers'])){
 				$info['success'] = 'Poprawnie pobrano '.count($response['offers']).' ogłoszeń';
 			}elseif($request['action']=='add_offer' and !empty($response['success']) and !empty($response['offer_id'])){
 				$info['success'] = $response['success'].'. ID ogłoszenia: '.$response['offer_id'];
